@@ -1,0 +1,9 @@
+<msup>|{%1}^{%2}
+<msub>|{%1}_{%2}
+<munder>|{%1}_{%2}
+<msubsup>|{%1}_{%2}^{%3}
+<munderover>|{%1}_{%2}^{%3}
+<mfrac>|\frac{%1}{%2}
+<msqrt>|\sqrt{%1}
+<mroot>|\sqrt[%2]{%1}
+<mfenced>|\left(%1\right)
