@@ -59,8 +59,9 @@ abstract class PictureReader {
     protected abstract PictureData readPictureStream(XWPFDocument document, XmlObject drawing);
 
     private String process(PictureData picture) throws IOException {
-        if (picture.getData().length == 0)
+        if (picture.getData().length == 0) {
             return "unknown";
+        }
 
         try {
             if (picture.isWmf()) {
