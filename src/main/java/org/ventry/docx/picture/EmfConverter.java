@@ -1,4 +1,4 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 import org.freehep.graphicsio.emf.EMFInputStream;
 import org.freehep.graphicsio.emf.EMFRenderer;
@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * file: org.ventry.docx.EmfConverter
+ * file: org.ventry.docx.picture.EmfConverter
  * author: ventry
  * create: 18/5/19 15:32
  * description:

@@ -1,13 +1,13 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 /**
- * file: org.ventry.docx.LengthUnit
+ * file: org.ventry.docx.picture.LengthUnit
  * author: ventry
  * create: 18/5/19 15:25
  * description:
  */
 
-public enum LengthUnit {
+enum LengthUnit {
     INCHES {
         public double toPoints(double len) {
             return len * C1;

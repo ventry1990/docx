@@ -1,4 +1,4 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 import java.io.IOException;
 import java.io.OutputStream;

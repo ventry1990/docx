@@ -1,4 +1,4 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 import net.arnx.wmf2svg.gdi.svg.SvgGdi;
 import net.arnx.wmf2svg.gdi.wmf.WmfParser;

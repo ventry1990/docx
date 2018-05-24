@@ -1,10 +1,10 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
- * file: org.ventry.docx.PictureData
+ * file: org.ventry.docx.picture.PictureData
  * author: ventry
  * create: 18/5/19 15:34
  * description:

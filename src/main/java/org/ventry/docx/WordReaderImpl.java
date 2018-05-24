@@ -3,6 +3,11 @@ package org.ventry.docx;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
+import org.ventry.WordReader;
+import org.ventry.docx.picture.DrawingReader;
+import org.ventry.docx.picture.ImageObjectReader;
+import org.ventry.docx.picture.PictureProcessor;
+import org.ventry.docx.picture.PictureReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,18 +18,18 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * file: org.ventry.docx.WordReader
+ * file: org.ventry.docx.WordReaderImpl
  * author: ventry
  * create: 18/5/19 15:24
  * description:
  */
 
-public class WordReader {
+public class WordReaderImpl implements WordReader {
     private final XWPFDocument document;
     private final List<PictureReader> pictureReaders;
     private final Map<Class<? extends IBodyElement>, Function<IBodyElement, CharSequence>> bodyFunctions;
 
-    public WordReader(InputStream input, PictureProcessor pictureProcessor) throws IOException {
+    public WordReaderImpl(InputStream input, PictureProcessor pictureProcessor) throws IOException {
         this.bodyFunctions = new HashMap<>();
         this.bodyFunctions.put(XWPFTable.class, el -> ((XWPFTable) el).getText());
         this.bodyFunctions.put(XWPFParagraph.class, el -> readParagraph((XWPFParagraph) el));

@@ -1,4 +1,4 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFPictureData;
@@ -11,24 +11,25 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTPosH;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTPosV;
+import org.ventry.docx.XmlNamespace;
 
 import java.util.List;
 
 /**
- * file: org.ventry.docx.DrawingReader
+ * file: org.ventry.docx.picture.DrawingReader
  * author: ventry
  * create: 18/5/19 15:38
  * description:
  */
 
-class DrawingReader extends PictureReader {
+public class DrawingReader extends PictureReader {
 
-    DrawingReader(PictureProcessor processor) {
+    public DrawingReader(PictureProcessor processor) {
         super(processor);
     }
 
     @Override
-    boolean match(XmlObject object) {
+    public boolean match(XmlObject object) {
         return object instanceof CTDrawing;
     }
 
@@ -38,7 +39,7 @@ class DrawingReader extends PictureReader {
         PictureData pictureData = new PictureData();
 
         XmlCursor cursor = drawing.newCursor();
-        cursor.selectPath(XMLNS_A + ".//a:blip");
+        cursor.selectPath(XmlNamespace.A.text() + ".//a:blip");
         if (cursor.toNextSelection()) {
             CTBlip blip = (CTBlip) cursor.getObject();
             String relationId = blip.getEmbed();
@@ -54,7 +55,7 @@ class DrawingReader extends PictureReader {
 
     private void sizeTo(CTDrawing drawing, PictureData picture) {
         XmlCursor cursor = drawing.newCursor();
-        cursor.selectPath(XMLNS_WP + ".//wp:extent");
+        cursor.selectPath(XmlNamespace.WP.text() + ".//wp:extent");
         if (cursor.toNextSelection()) {
             CTPositiveSize2D ext = (CTPositiveSize2D) cursor.getObject();
             picture.sizeTo(ext.getCx(), ext.getCy(), LengthUnit.EMUS);
@@ -70,7 +71,7 @@ class DrawingReader extends PictureReader {
             long left = 0;
             long top = 0;
             if (simplePos) {
-                cursor.selectPath(XMLNS_WP + "./wp:simplePos");
+                cursor.selectPath(XmlNamespace.WP.text() + "./wp:simplePos");
                 if (cursor.toNextSelection()) {
                     CTPoint2D point = (CTPoint2D) cursor.getObject();
                     left = point.getX();
@@ -78,13 +79,13 @@ class DrawingReader extends PictureReader {
                     picture.moveTo(top, left, LengthUnit.EMUS);
                 }
             } else {
-                cursor.selectPath(XMLNS_WP + "./wp:positionH");
+                cursor.selectPath(XmlNamespace.WP.text() + "./wp:positionH");
                 if (cursor.toNextSelection()) {
                     left = ((CTPosH) cursor.getObject()).getPosOffset();
                 }
 
                 cursor.toParent();
-                cursor.selectPath(XMLNS_WP + "./wp:positionV");
+                cursor.selectPath(XmlNamespace.WP.text() + "./wp:positionV");
                 if (cursor.toNextSelection()) {
                     top = ((CTPosV) cursor.getObject()).getPosOffset();
                 }

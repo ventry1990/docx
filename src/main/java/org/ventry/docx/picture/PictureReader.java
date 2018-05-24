@@ -1,4 +1,4 @@
-package org.ventry.docx;
+package org.ventry.docx.picture;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.xmlbeans.XmlObject;
@@ -7,19 +7,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
- * file: org.ventry.docx.PictureReader
+ * file: org.ventry.docx.picture.PictureReader
  * author: ventry
  * create: 18/5/19 15:33
  * description:
  */
 
-abstract class PictureReader {
-    static final String XMLNS_A
-            = "declare namespace a='http://schemas.openxmlformats.org/drawingml/2006/main';";
-    static final String XMLNS_WP
-            = "declare namespace wp='http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing';";
-    static final String XMLNS_V
-            = "declare namespace v='urn:schemas-microsoft-com:vml';";
+public abstract class PictureReader {
 
     private final PictureProcessor processor;
 
@@ -27,9 +21,9 @@ abstract class PictureReader {
         this.processor = processor;
     }
 
-    abstract boolean match(XmlObject object);
+    public abstract boolean match(XmlObject object);
 
-    CharSequence read(XWPFDocument document, XmlObject object) throws IOException {
+    public CharSequence read(XWPFDocument document, XmlObject object) throws IOException {
         PictureData picture = readPictureStream(document, object);
 
         StringBuilder img = new StringBuilder("<img ");
