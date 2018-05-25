@@ -1,5 +1,8 @@
 package org.ventry.docx.math;
 
+
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -24,11 +27,6 @@ public enum LatexSymbols {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String search(String mml) {
-        String latex = symbols.get(mml);
-        return latex == null ? mml : latex;
     }
 
     private void loadSymbols() throws IOException {
@@ -62,8 +60,20 @@ public enum LatexSymbols {
                 }
 
                 String[] pair = symbol.split("\\|");
-                symbols.put(pair[0], pair[1]);
+                symbols.put(translate(pair[0]), pair[1]);
             }
         }
+    }
+
+    private String translate(String str) {
+        return StringEscapeUtils.unescapeHtml4(str);
+    }
+
+    public String getOrDefault(String el, String def) {
+        final String key = translate(el);
+        if (symbols.containsKey(key)) {
+            return symbols.get(key);
+        }
+        return def;
     }
 }

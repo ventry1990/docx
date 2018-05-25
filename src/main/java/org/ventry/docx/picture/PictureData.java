@@ -12,27 +12,27 @@ import java.io.InputStream;
 
 class PictureData {
     /**
-     * 文件名
+     * File Name
      */
     private String name;
     /**
-     * 二进制数据
+     * Content
      */
     private byte[] data;
     /**
-     * 垂直位置（单位：pt）
+     * Vertical Position (Unit：pt)
      */
     private double top;
     /**
-     * 水平位置（单位：pt）
+     * Horizontal Position (Unit：pt)
      */
     private double left;
     /**
-     * 宽度（单位：pt）
+     * (Unit：pt)
      */
     private double width;
     /**
-     * 长度（单位：pt）
+     * (Unit：pt)
      */
     private double height;
 

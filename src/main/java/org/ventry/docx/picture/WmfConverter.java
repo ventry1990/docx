@@ -35,9 +35,9 @@ final class WmfConverter {
             final SvgGdi svgGdi = new SvgGdi(false);
             parser.parse(inputStream, svgGdi);
             try (ByteArrayOutputStream svgStream = new ByteArrayOutputStream()) {
-                // 将 wmf 转为 svg
+                // Convert wmf to svg.
                 readSvgStream(svgGdi.getDocument(), svgStream);
-                // 将 svg 转为 png
+                // Convert svg to png.
                 ImageTranscoder it = new PNGTranscoder();
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 TranscoderInput input = new TranscoderInput(new ByteArrayInputStream(svgStream.toByteArray()));

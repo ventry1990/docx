@@ -1,0 +1,21 @@
+<!--${\lim}_{x \rightarrow \infty} {x}^{2}$-->
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <munder>
+        <mrow>
+            <mi>lim</mi>
+        </mrow>
+        <mrow>
+            <mi>x</mi>
+            <mo>&#x2192;</mo>
+            <mi>&#x221E;</mi>
+        </mrow>
+    </munder>
+    <msup>
+        <mrow>
+            <mi>x</mi>
+        </mrow>
+        <mrow>
+            <mn>2</mn>
+        </mrow>
+    </msup>
+</math>
