@@ -5,7 +5,6 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,25 +23,25 @@ public enum LatexSymbols {
     LatexSymbols() {
         try {
             loadSymbols();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void loadSymbols() throws IOException {
+    private void loadSymbols() throws Exception {
         File[] files = getSymbolFiles();
         for (File file : files) {
             loadSymbolsFrom(file);
         }
     }
 
-    private File[] getSymbolFiles() throws IOException {
+    private File[] getSymbolFiles() throws Exception {
         URL symbols = getClass().getClassLoader().getResource("symbols");
         if (symbols == null) {
             throw new IOException("/symbols doesn't exist.");
         }
 
-        File dir = Paths.get(symbols.getPath()).toFile();
+        File dir = new File(symbols.toURI());
         if (!dir.isDirectory()) {
             throw new IOException("/symbols isn't a directory");
         }

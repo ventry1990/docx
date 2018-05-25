@@ -18,7 +18,7 @@ public class WordReaderImplTest {
     public void read() throws Exception {
         String text = new WordReaderImpl(
                 new FileInputStream(getClass().getResource("/demo.docx").getFile()),
-                new DownloadToFolder(getClass().getResource("/img/").getPath())
+                new DownloadToFolder()
         ).read();
         System.out.println(text);
         Assert.assertNotNull(text);
@@ -27,8 +27,16 @@ public class WordReaderImplTest {
     static class DownloadToFolder implements PictureProcessor {
         private String path;
 
-        DownloadToFolder(String dirPath) {
-            this.path = dirPath;
+        DownloadToFolder() throws IOException {
+            String root = DownloadToFolder.class.getResource("/").getPath();
+            File dir = new File(root + File.separator + "img");
+            if (!dir.exists()) {
+                if (!dir.mkdir()) {
+                    throw new IOException("Failed to create image directory.");
+                }
+            } else {
+                this.path = dir.getCanonicalPath();
+            }
         }
 
         public String process(String name, OutputStream outputStream) throws IOException {
