@@ -4,6 +4,7 @@
 &bigoplus;|\oplus
 &CirclePlus;|\oplus
 &minus;|-
+&plusmn;|\pm
 &PlusMinus;|\pm
 &frasl;|/
 &dot;|\cdot
@@ -30,6 +31,8 @@
 &rang;|\right\rangle
 &rangle;|\right\rangle
 &RightAngleBracket;|\right\rangle
+∵|\because
+&there4|\therefore
 
 &sum;|\sum
 &Sum;|\sum

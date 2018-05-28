@@ -1,0 +1,32 @@
+<!--$x = \dfrac{- b \pm \sqrt{{b}^{2} - 4 a c}}{2 a}$-->
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mi>x</mi>
+    <mo>=</mo>
+    <mfrac>
+        <mrow>
+            <mo>-</mo>
+            <mi>b</mi>
+            <mo>±</mo>
+            <msqrt>
+                <mrow>
+                    <msup>
+                        <mrow>
+                            <mi>b</mi>
+                        </mrow>
+                        <mrow>
+                            <mn>2</mn>
+                        </mrow>
+                    </msup>
+                    <mo>-</mo>
+                    <mn>4</mn>
+                    <mi>a</mi>
+                    <mi>c</mi>
+                </mrow>
+            </msqrt>
+        </mrow>
+        <mrow>
+            <mn>2</mn>
+            <mi>a</mi>
+        </mrow>
+    </mfrac>
+</math>
