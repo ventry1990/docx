@@ -1,0 +1,57 @@
+<!--${\left({1 + x}\right)}^{n} = 1 + \dfrac{n x}{1 !} + \dfrac{n \left({n - 1}\right) {x}^{2}}{2 !} + ...$-->
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <msup>
+        <mrow>
+            <mfenced separators="|">
+                <mrow>
+                    <mn>1</mn>
+                    <mo>+</mo>
+                    <mi>x</mi>
+                </mrow>
+            </mfenced>
+        </mrow>
+        <mrow>
+            <mi>n</mi>
+        </mrow>
+    </msup>
+    <mo>=</mo>
+    <mn>1</mn>
+    <mo>+</mo>
+    <mfrac>
+        <mrow>
+            <mi>n</mi>
+            <mi>x</mi>
+        </mrow>
+        <mrow>
+            <mn>1</mn>
+            <mo>!</mo>
+        </mrow>
+    </mfrac>
+    <mo>+</mo>
+    <mfrac>
+        <mrow>
+            <mi>n</mi>
+            <mfenced separators="|">
+                <mrow>
+                    <mi>n</mi>
+                    <mo>-</mo>
+                    <mn>1</mn>
+                </mrow>
+            </mfenced>
+            <msup>
+                <mrow>
+                    <mi>x</mi>
+                </mrow>
+                <mrow>
+                    <mn>2</mn>
+                </mrow>
+            </msup>
+        </mrow>
+        <mrow>
+            <mn>2</mn>
+            <mo>!</mo>
+        </mrow>
+    </mfrac>
+    <mo>+</mo>
+    <mo>…</mo>
+</math>

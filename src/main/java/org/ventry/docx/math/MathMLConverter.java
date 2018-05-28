@@ -101,7 +101,7 @@ class MathMLConverter {
                 } else {
                     count--;
                 }
-            } else {
+            } else if (mml.charAt(from - 1) == '<') {
                 count++;
             }
         }
