@@ -1,4 +1,4 @@
-<!--${\int}_{0}^{\infty} \left(4 {x}^{2} + y\right) d {x}^{2}$-->
+<!--${\int}_{0}^{\infty} \left({4 {x}^{2} + y}\right) d {x}^{2}$-->
 <math xmlns="http://www.w3.org/1998/Math/MathML">
     <munderover>
         <mrow>
