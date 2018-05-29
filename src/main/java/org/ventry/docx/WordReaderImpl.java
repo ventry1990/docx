@@ -27,13 +27,13 @@ import java.util.function.Function;
 public class WordReaderImpl implements WordReader {
     private final XWPFDocument document;
     private final List<PictureReader> pictureReaders;
-    private final Map<Class<? extends IBodyElement>, Function<IBodyElement, CharSequence>> bodyFunctions;
+    private final Map<BodyElementType, Function<IBodyElement, CharSequence>> bodyFunctions;
 
     public WordReaderImpl(InputStream input, PictureProcessor pictureProcessor) throws IOException {
         this.bodyFunctions = new HashMap<>();
-        this.bodyFunctions.put(XWPFTable.class, el -> ((XWPFTable) el).getText());
-        this.bodyFunctions.put(XWPFParagraph.class, el -> readParagraph((XWPFParagraph) el));
-        this.bodyFunctions.put(XWPFSDT.class, el -> ((XWPFSDT) el).getContent().getText());
+        this.bodyFunctions.put(BodyElementType.TABLE, el -> ((XWPFTable) el).getText());
+        this.bodyFunctions.put(BodyElementType.PARAGRAPH, el -> readParagraph((XWPFParagraph) el));
+        this.bodyFunctions.put(BodyElementType.CONTENTCONTROL, el -> ((XWPFSDT) el).getContent().getText());
 
         this.pictureReaders = Arrays.asList(
                 new DrawingReader(pictureProcessor),
@@ -46,7 +46,7 @@ public class WordReaderImpl implements WordReader {
         List<IBodyElement> elements = document.getBodyElements();
         StringBuilder content = new StringBuilder();
         for (IBodyElement element : elements) {
-            Function<IBodyElement, CharSequence> function = bodyFunctions.get(element.getClass());
+            Function<IBodyElement, CharSequence> function = bodyFunctions.get(element.getElementType());
             if (function != null) {
                 content.append("<p>").append(function.apply(element))
                         .append("</p>").append('\n');
