@@ -25,7 +25,7 @@ import java.net.URL;
  */
 
 public class FormulaReader implements ContentReader {
-    private static final StreamSource STYLE_SOURCE = new StreamSource();
+    private static Transformer transformer;
 
     static {
         try {
@@ -35,11 +35,19 @@ public class FormulaReader implements ContentReader {
                 throw new FileNotFoundException(path);
             }
 
-            STYLE_SOURCE.setSystemId(styleUrl.toURI().toASCIIString());
+            StreamSource source = new StreamSource(styleUrl.toURI().toASCIIString());
+            transformer = prepareTransformer(source);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    private static Transformer prepareTransformer(StreamSource source) throws TransformerConfigurationException {
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer(source);
+        transformer.setOutputProperty("omit-xml-declaration", "yes");
+        return transformer;
     }
 
     public boolean match(XmlObject object) {
@@ -49,7 +57,6 @@ public class FormulaReader implements ContentReader {
     public CharSequence read(XmlObject object) throws ContentReadException {
         CTOMath oMath = (CTOMath) object;
         try {
-            Transformer transformer = prepareTransformer();
             DOMSource source = new DOMSource(oMath.getDomNode());
             StringWriter mathML = new StringWriter();
             transformer.transform(source, new StreamResult(mathML));
@@ -57,12 +64,5 @@ public class FormulaReader implements ContentReader {
         } catch (TransformerException te) {
             throw new ContentReadException(te.getMessage(), te);
         }
-    }
-
-    private Transformer prepareTransformer() throws TransformerConfigurationException {
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer(STYLE_SOURCE);
-        transformer.setOutputProperty("omit-xml-declaration", "yes");
-        return transformer;
     }
 }
