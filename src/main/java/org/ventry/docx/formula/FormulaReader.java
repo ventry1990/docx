@@ -13,8 +13,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
-import java.io.InputStream;
+import java.io.FileNotFoundException;
 import java.io.StringWriter;
+import java.net.URL;
 
 /**
  * file: org.ventry.docx.formula.FormulaReader
@@ -24,12 +25,21 @@ import java.io.StringWriter;
  */
 
 public class FormulaReader implements ContentReader {
-    private static final StreamSource STYLE_SOURCE;
+    private static final StreamSource STYLE_SOURCE = new StreamSource();
 
     static {
-        String stylePath = "xsl" + File.separator + "omml2mml.xsl";
-        InputStream styleStream = FormulaReader.class.getClassLoader().getResourceAsStream(stylePath);
-        STYLE_SOURCE = new StreamSource(styleStream);
+        try {
+            String path = "xsl" + File.separator + "omml2mml.xsl";
+            URL styleUrl = FormulaReader.class.getClassLoader().getResource(path);
+            if (styleUrl == null) {
+                throw new FileNotFoundException(path);
+            }
+
+            STYLE_SOURCE.setSystemId(styleUrl.toURI().toASCIIString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public boolean match(XmlObject object) {
