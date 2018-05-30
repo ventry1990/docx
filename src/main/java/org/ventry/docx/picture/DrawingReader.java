@@ -24,17 +24,16 @@ import java.util.List;
 
 public class DrawingReader extends PictureReader {
 
-    public DrawingReader(PictureProcessor processor) {
-        super(processor);
+    public DrawingReader(XWPFDocument document, PictureProcessor processor) {
+        super(document, processor);
     }
 
-    @Override
     public boolean match(XmlObject object) {
         return object instanceof CTDrawing;
     }
 
     @Override
-    protected PictureData readPictureStream(XWPFDocument document, XmlObject object) {
+    protected PictureData readPictureStream(XmlObject object) {
         CTDrawing drawing = (CTDrawing) object;
         PictureData pictureData = new PictureData();
 
@@ -43,7 +42,7 @@ public class DrawingReader extends PictureReader {
         if (cursor.toNextSelection()) {
             CTBlip blip = (CTBlip) cursor.getObject();
             String relationId = blip.getEmbed();
-            XWPFPictureData picture = (XWPFPictureData) document.getRelationById(relationId);
+            XWPFPictureData picture = (XWPFPictureData) getDocument().getRelationById(relationId);
             pictureData = new PictureData(picture.getFileName(), picture.getData());
             sizeTo(drawing, pictureData);
             tryMoveTo(drawing, pictureData);

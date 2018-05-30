@@ -2,6 +2,8 @@ package org.ventry.docx.picture;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.xmlbeans.XmlObject;
+import org.ventry.docx.ContentReadException;
+import org.ventry.docx.ContentReader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,44 +15,52 @@ import java.io.IOException;
  * description:
  */
 
-public abstract class PictureReader {
+public abstract class PictureReader implements ContentReader {
 
+    private final XWPFDocument document;
     private final PictureProcessor processor;
 
-    PictureReader(PictureProcessor processor) {
+    PictureReader(XWPFDocument document, PictureProcessor processor) {
+        this.document = document;
         this.processor = processor;
     }
 
-    public abstract boolean match(XmlObject object);
+    public CharSequence read(XmlObject object) throws ContentReadException {
+        PictureData picture = readPictureStream(object);
+        try {
+            StringBuilder img = new StringBuilder("<img ");
+            img.append("src='").append(process(picture)).append("' ");
+            if (picture.isShaped()) {
+                img.append("width='")
+                        .append(LengthUnit.POINTS.toPixels(picture.getWidth()))
+                        .append("' ")
+                        .append("height='")
+                        .append(LengthUnit.POINTS.toPixels(picture.getHeight()))
+                        .append("' ");
+            }
 
-    public CharSequence read(XWPFDocument document, XmlObject object) throws IOException {
-        PictureData picture = readPictureStream(document, object);
+            if (picture.isAnchored()) {
+                img.append(" style='position:absolute;margin-top:")
+                        .append(LengthUnit.POINTS.toPixels(picture.getTop()))
+                        .append("px;")
+                        .append("margin-left:")
+                        .append(LengthUnit.POINTS.toPixels(picture.getLeft()))
+                        .append("px;' ");
+            }
 
-        StringBuilder img = new StringBuilder("<img ");
-        img.append("src='").append(process(picture)).append("' ");
-        if (picture.isShaped()) {
-            img.append("width='")
-                    .append(LengthUnit.POINTS.toPixels(picture.getWidth()))
-                    .append("' ")
-                    .append("height='")
-                    .append(LengthUnit.POINTS.toPixels(picture.getHeight()))
-                    .append("' ");
+            img.append("/>");
+
+            return img;
+        } catch (IOException ioe) {
+            throw new ContentReadException(ioe.getMessage(), ioe);
         }
-
-        if (picture.isAnchored()) {
-            img.append(" style='position:absolute;margin-top:")
-                    .append(LengthUnit.POINTS.toPixels(picture.getTop()))
-                    .append("px;")
-                    .append("margin-left:")
-                    .append(LengthUnit.POINTS.toPixels(picture.getLeft()))
-                    .append("px;' ");
-        }
-
-        img.append("/>");
-        return img;
     }
 
-    protected abstract PictureData readPictureStream(XWPFDocument document, XmlObject drawing);
+    abstract PictureData readPictureStream(XmlObject drawing);
+
+    protected XWPFDocument getDocument() {
+        return document;
+    }
 
     private String process(PictureData picture) throws IOException {
         if (picture.getData().length == 0) {

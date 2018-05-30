@@ -1,4 +1,4 @@
-package org.ventry.docx.math;
+package org.ventry.docx.formula;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * file: org.ventry.docx.math.SymbolTemplate
+ * file: org.ventry.docx.formula.SymbolTemplate
  * author: ventry
  * create: 18/5/25 15:47
  * description:

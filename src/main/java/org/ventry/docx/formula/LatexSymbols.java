@@ -1,4 +1,4 @@
-package org.ventry.docx.math;
+package org.ventry.docx.formula;
 
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * file: org.ventry.docx.math.LatexSymbols
+ * file: org.ventry.docx.formula.LatexSymbols
  * author: ventry
  * create: 18/5/23 17:14
  * description:

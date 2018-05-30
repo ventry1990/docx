@@ -1,4 +1,4 @@
-package org.ventry.docx.math;
+package org.ventry.docx.formula;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 /**
- * file: org.ventry.docx.math.MathMLConverterTest
+ * file: org.ventry.docx.formula.MathMLConverterTest
  * author: ventry
  * create: 18/5/25 17:13
  * description:

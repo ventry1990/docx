@@ -23,17 +23,16 @@ public class ImageObjectReader extends PictureReader {
     private static final Pattern WIDTH_PATTERN = Pattern.compile("(?<=width:)\\d+(?:\\.\\d+)?(?=pt)");
     private static final Pattern HEIGHT_PATTERN = Pattern.compile("(?<=height:)\\d+(?:\\.\\d+)?(?=pt)");
 
-    public ImageObjectReader(PictureProcessor processor) {
-        super(processor);
+    public ImageObjectReader(XWPFDocument document, PictureProcessor processor) {
+        super(document, processor);
     }
 
-    @Override
     public boolean match(XmlObject object) {
         return object instanceof CTObject;
     }
 
     @Override
-    protected PictureData readPictureStream(XWPFDocument document, XmlObject object) {
+    protected PictureData readPictureStream(XmlObject object) {
         CTObject image = (CTObject) object;
         PictureData pictureData = new PictureData();
 
@@ -42,7 +41,7 @@ public class ImageObjectReader extends PictureReader {
         if (cursor.toNextSelection()) {
             CTImageData imageData = (CTImageData) cursor.getObject();
             String relationId = imageData.getId2();
-            XWPFPictureData picture = (XWPFPictureData) document.getRelationById(relationId);
+            XWPFPictureData picture = (XWPFPictureData) getDocument().getRelationById(relationId);
             pictureData = new PictureData(picture.getFileName(), picture.getData());
             sizeTo(image, pictureData);
         }

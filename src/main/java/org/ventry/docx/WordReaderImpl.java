@@ -4,10 +4,11 @@ import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.ventry.WordReader;
+import org.ventry.docx.formula.FormulaReader;
 import org.ventry.docx.picture.DrawingReader;
 import org.ventry.docx.picture.ImageObjectReader;
 import org.ventry.docx.picture.PictureProcessor;
-import org.ventry.docx.picture.PictureReader;
+import org.ventry.docx.text.TextReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +27,7 @@ import java.util.function.Function;
 
 public class WordReaderImpl implements WordReader {
     private final XWPFDocument document;
-    private final List<PictureReader> pictureReaders;
+    private final List<ContentReader> readers;
     private final Map<BodyElementType, Function<IBodyElement, CharSequence>> bodyFunctions;
 
     public WordReaderImpl(InputStream input, PictureProcessor pictureProcessor) throws IOException {
@@ -35,11 +36,12 @@ public class WordReaderImpl implements WordReader {
         this.bodyFunctions.put(BodyElementType.PARAGRAPH, el -> readParagraph((XWPFParagraph) el));
         this.bodyFunctions.put(BodyElementType.CONTENTCONTROL, el -> ((XWPFSDT) el).getContent().getText());
 
-        this.pictureReaders = Arrays.asList(
-                new DrawingReader(pictureProcessor),
-                new ImageObjectReader(pictureProcessor));
-
         this.document = new XWPFDocument(input);
+        this.readers = Arrays.asList(
+                new TextReader(),
+                new FormulaReader(),
+                new DrawingReader(this.document, pictureProcessor),
+                new ImageObjectReader(this.document, pictureProcessor));
     }
 
     public String read() throws IOException {
@@ -58,34 +60,27 @@ public class WordReaderImpl implements WordReader {
 
     private StringBuilder readParagraph(XWPFParagraph paragraph) {
         StringBuilder content = new StringBuilder();
-        for (XWPFRun run : paragraph.getRuns()) {
-            String text = run.getText(run.getTextPosition());
-            if (text != null) {
-                content.append(text);
-                continue;
-            }
-
-            tryAppendPicture(content, run);
+        XmlCursor cursor = paragraph.getCTP().newCursor();
+        String namespaces = XmlNamespace.concat(XmlNamespace.W, XmlNamespace.M);
+        String path = ".//w:t | .//w:drawing | .//w:object | .//m:oMath";
+        cursor.selectPath(namespaces + path);
+        while (cursor.toNextSelection()) {
+            content.append(tryRead(cursor.getObject()));
         }
-
+        cursor.dispose();
         return content;
     }
 
-    private void tryAppendPicture(StringBuilder content, XWPFRun run) {
-        XmlCursor cursor = run.getCTR().newCursor();
-        cursor.selectPath("./*");
-        while (cursor.toNextSelection()) {
-            XmlObject xmlObject = cursor.getObject();
-            pictureReaders.forEach(reader -> {
-                if (reader.match(xmlObject)) {
-                    try {
-                        content.append(reader.read(document, xmlObject));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+    private CharSequence tryRead(XmlObject object) {
+        for (ContentReader reader : readers) {
+            if (reader.match(object)) {
+                try {
+                    return reader.read(object);
+                } catch (ContentReadException cre) {
+                    cre.printStackTrace();
                 }
-            });
+            }
         }
-        cursor.dispose();
+        return "";
     }
 }

@@ -1,13 +1,13 @@
-package org.ventry.docx.math;
+package org.ventry.docx.formula;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.ventry.docx.math.LatexSymbols.DICTIONARY;
+import static org.ventry.docx.formula.LatexSymbols.DICTIONARY;
 
 /**
- * file: org.ventry.docx.math.MathMLConverter
+ * file: org.ventry.docx.formula.MathMLConverter
  * author: ventry
  * create: 18/5/24 13:26
  * description:
