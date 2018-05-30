@@ -32,7 +32,7 @@ public class WordReaderImpl implements WordReader {
 
     public WordReaderImpl(InputStream input, PictureProcessor pictureProcessor) throws IOException {
         this.bodyFunctions = new HashMap<>();
-        this.bodyFunctions.put(BodyElementType.TABLE, el -> ((XWPFTable) el).getText());
+        this.bodyFunctions.put(BodyElementType.TABLE, el -> readTable((XWPFTable) el));
         this.bodyFunctions.put(BodyElementType.PARAGRAPH, el -> readParagraph((XWPFParagraph) el));
         this.bodyFunctions.put(BodyElementType.CONTENTCONTROL, el -> ((XWPFSDT) el).getContent().getText());
 
@@ -56,6 +56,20 @@ public class WordReaderImpl implements WordReader {
         }
 
         return content.toString();
+    }
+
+    private StringBuilder readTable(XWPFTable table) {
+        StringBuilder content = new StringBuilder();
+        for (XWPFTableRow row : table.getRows()) {
+            for (XWPFTableCell cell : row.getTableCells()) {
+                for (XWPFParagraph paragraph : cell.getParagraphs()) {
+                    content.append(readParagraph(paragraph));
+                }
+                content.append("\t");
+            }
+            content.append('\n');
+        }
+        return content;
     }
 
     private StringBuilder readParagraph(XWPFParagraph paragraph) {
