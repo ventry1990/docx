@@ -94,7 +94,7 @@ class MathMLConverter {
     private int findSectionEnd(String section, int endExclude) {
         int count = 0;
         int from = cursor;
-        while ((from = mml.indexOf(section, from + 1)) < endExclude) {
+        while ((from = mml.indexOf(section, from + 1)) < endExclude && from > cursor) {
             if (mml.charAt(from - 1) == '/') {
                 if (count == 0) {
                     return from - 2;
