@@ -34,9 +34,8 @@ public class WordReaderImplTest {
                 if (!dir.mkdir()) {
                     throw new IOException("Failed to create image directory.");
                 }
-            } else {
-                this.path = dir.getCanonicalPath();
             }
+            this.path = dir.getCanonicalPath();
         }
 
         public String process(String name, OutputStream outputStream) throws IOException {

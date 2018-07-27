@@ -2,7 +2,6 @@ package org.ventry.docx.picture;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.xmlbeans.XmlObject;
-import org.ventry.docx.ContentReadException;
 import org.ventry.docx.ContentReader;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +24,7 @@ public abstract class PictureReader implements ContentReader {
         this.processor = processor;
     }
 
-    public CharSequence read(XmlObject object) throws ContentReadException {
+    public CharSequence read(XmlObject object) {
         PictureData picture = readPictureStream(object);
         try {
             StringBuilder img = new StringBuilder("<img ");
@@ -52,7 +51,8 @@ public abstract class PictureReader implements ContentReader {
 
             return img;
         } catch (IOException ioe) {
-            throw new ContentReadException(ioe.getMessage(), ioe);
+            System.err.println("Failed to read image: " + ioe.getMessage());
+            return "";
         }
     }
 

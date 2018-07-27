@@ -4,9 +4,13 @@ package org.ventry.docx.formula;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.*;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * file: org.ventry.docx.formula.LatexSymbols
@@ -24,34 +28,52 @@ public enum LatexSymbols {
         try {
             loadSymbols();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Cannot load latex symbols: " + e);
         }
     }
 
     private void loadSymbols() throws Exception {
-        File[] files = getSymbolFiles();
-        for (File file : files) {
-            loadSymbolsFrom(file);
-        }
-    }
-
-    private File[] getSymbolFiles() throws Exception {
         URL symbols = getClass().getClassLoader().getResource("symbols");
         if (symbols == null) {
-            throw new IOException("/symbols doesn't exist.");
+            throw new IOException("/symbols doesn't exist");
         }
 
-        File dir = new File(symbols.toURI());
-        if (!dir.isDirectory()) {
-            throw new IOException("/symbols isn't a directory");
+        if ("file".equals(symbols.getProtocol())) {
+            loadLocalSymbols(symbols);
+        } else if ("jar".equals(symbols.getProtocol())) {
+            loadJarSymbols(symbols);
+        } else {
+            throw new IOException("/symbols cannot be recognized");
         }
-
-        return dir.listFiles();
     }
 
-    private void loadSymbolsFrom(File file) throws IOException {
+    private void loadLocalSymbols(URL symbols) throws Exception {
+        File[] files = new File(symbols.toURI()).listFiles();
+        if (files == null) {
+            throw new IOException("/symbols/* doesn't exist");
+        }
+
+        for (File file : files) {
+            loadSymbolsFrom(new FileInputStream(file));
+        }
+    }
+
+    private void loadJarSymbols(URL symbols) throws Exception {
+        JarURLConnection connection = (JarURLConnection) symbols.openConnection();
+        JarFile jarFile = connection.getJarFile();
+        Enumeration<JarEntry> entries = jarFile.entries();
+        while (entries.hasMoreElements()) {
+            String entryName = entries.nextElement().getName();
+            if (entryName.contains("symbols/") && !entryName.endsWith("symbols/")) {
+                URL url = new URL("jar:file:" + jarFile.getName() + "!/" + entryName);
+                loadSymbolsFrom(url.openStream());
+            }
+        }
+    }
+
+    private void loadSymbolsFrom(InputStream inputStream) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(file)))) {
+                new InputStreamReader(inputStream))) {
             String symbol;
             while ((symbol = reader.readLine()) != null) {
                 if (symbol.startsWith("#") || !symbol.contains("|")) {

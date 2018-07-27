@@ -13,5 +13,5 @@ public interface ContentReader {
 
     boolean match(XmlObject object);
 
-    CharSequence read(XmlObject object) throws ContentReadException;
+    CharSequence read(XmlObject object);
 }

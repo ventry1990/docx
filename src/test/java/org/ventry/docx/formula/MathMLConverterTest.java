@@ -32,7 +32,7 @@ public class MathMLConverterTest {
                 String actual = converter.convert();
 
                 String expected = readExpectedOutput(file);
-                Assert.assertEquals("In case provided by " + file.getName() + ", the validation fails.",
+                Assert.assertEquals("In the case provided by " + file.getName() + ", the validation fails.",
                         expected, actual);
             } catch (IOException ioe) {
                 Assert.fail(ioe.getMessage());

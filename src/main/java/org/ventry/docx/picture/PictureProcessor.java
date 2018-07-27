@@ -10,5 +10,6 @@ import java.io.OutputStream;
  * description:
  */
 public interface PictureProcessor {
+
     String process(String name, OutputStream outputStream) throws IOException;
 }

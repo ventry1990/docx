@@ -2,7 +2,6 @@ package org.ventry.docx.text;
 
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
-import org.ventry.docx.ContentReadException;
 import org.ventry.docx.ContentReader;
 
 /**
@@ -18,7 +17,7 @@ public class TextReader implements ContentReader {
         return object instanceof CTText;
     }
 
-    public CharSequence read(XmlObject object) throws ContentReadException {
+    public CharSequence read(XmlObject object) {
         return ((CTText) object).getStringValue();
     }
 }

@@ -88,11 +88,7 @@ public class WordReaderImpl implements WordReader {
     private CharSequence tryRead(XmlObject object) {
         for (ContentReader reader : readers) {
             if (reader.match(object)) {
-                try {
-                    return reader.read(object);
-                } catch (ContentReadException cre) {
-                    cre.printStackTrace();
-                }
+                return reader.read(object);
             }
         }
         return "";

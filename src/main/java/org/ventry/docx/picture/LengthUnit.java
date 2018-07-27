@@ -26,6 +26,15 @@ enum LengthUnit {
             return toPoints(len) * TIMES;
         }
     },
+    PIXELS {
+        public double toPoints(double len) {
+            return len / TIMES;
+        }
+
+        public double toPixels(double len) {
+            return len;
+        }
+    },
     EMUS {
         public double toPoints(double len) {
             return (len / C2) * C1;
