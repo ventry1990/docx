@@ -1,0 +1,24 @@
+<!--$\left({- \dfrac{4}{5}}\right) \div \left({- 1 \times \dfrac{1}{4}}\right)$-->
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mfenced separators="|">
+        <mrow>
+            <mo>−</mo>
+            <mfrac>
+                <mrow><mn>4</mn></mrow>
+                <mrow><mn>5</mn></mrow>
+            </mfrac>
+        </mrow>
+    </mfenced>
+    <mo>÷</mo>
+    <mfenced separators="|">
+        <mrow>
+            <mo>−</mo>
+            <mn>1</mn>
+            <mo>&#215;</mo>
+            <mfrac>
+                <mrow><mn>1</mn></mrow>
+                <mrow><mn>4</mn></mrow>
+            </mfrac>
+        </mrow>
+    </mfenced>
+</math>

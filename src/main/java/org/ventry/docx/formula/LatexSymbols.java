@@ -6,6 +6,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import java.io.*;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +74,7 @@ public enum LatexSymbols {
 
     private void loadSymbolsFrom(InputStream inputStream) throws IOException {
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(inputStream))) {
+                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String symbol;
             while ((symbol = reader.readLine()) != null) {
                 if (symbol.startsWith("#") || !symbol.contains("|")) {

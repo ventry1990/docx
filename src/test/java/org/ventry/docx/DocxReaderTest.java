@@ -7,21 +7,24 @@ import org.ventry.docx.picture.PictureProcessor;
 import java.io.*;
 
 /**
- * file: org.ventry.docx.WordReaderImplTest
+ * file: org.ventry.docx.DocxReaderTest
  * author: ventry
  * create: 18/5/19 16:10
  * description:
  */
-public class WordReaderImplTest {
+public class DocxReaderTest {
 
     @Test
     public void read() throws Exception {
-        String text = new WordReaderImpl(
-                new FileInputStream(getClass().getResource("/demo.docx").getFile()),
-                new DownloadToFolder()
-        ).read();
-        System.out.println(text);
-        Assert.assertNotNull(text);
+        try (InputStream stream = new FileInputStream(getClass().getResource("/demo.docx").getFile())) {
+            String text = new DocxReader.Builder()
+                    .setDocumentStream(stream)
+                    .setPictureProcessor(new DownloadToFolder())
+                    .build()
+                    .read();
+            System.out.println(text);
+            Assert.assertNotNull(text);
+        }
     }
 
     static class DownloadToFolder implements PictureProcessor {
