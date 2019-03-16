@@ -1,0 +1,12 @@
+<!--${\text{上限一}} - {\text{下限一}} = y$-->
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow>
+        <mi>上限一</mi>
+    </mrow>
+    <mo>-</mo>
+    <mrow>
+        <mi>下限一</mi>
+    </mrow>
+    <mo>=</mo>
+    <mi>y</mi>
+</math>

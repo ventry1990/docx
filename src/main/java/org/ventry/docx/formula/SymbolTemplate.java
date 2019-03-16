@@ -3,7 +3,6 @@ package org.ventry.docx.formula;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * file: org.ventry.docx.formula.SymbolTemplate
@@ -33,7 +32,7 @@ final class SymbolTemplate implements CharSequence {
                     break;
                 case ALL:
                     content.delete(i, i + 2);
-                    String replacement = replacements.stream().collect(Collectors.joining(" "));
+                    String replacement = String.join(" ", replacements);
                     content.insert(i, replacement);
                     return true;
                 case NONE:
@@ -63,7 +62,6 @@ final class SymbolTemplate implements CharSequence {
         char next = content.charAt(index + 1);
         return (next > '0' && next <= '9') || next == 'S';
     }
-
 
     void append(List<CharSequence> rest) {
         if (CollectionUtils.isEmpty(rest)) {

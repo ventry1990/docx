@@ -2,7 +2,7 @@ package org.ventry.docx.formula;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 import static org.ventry.docx.formula.LatexSymbols.DICTIONARY;
 
@@ -14,14 +14,16 @@ import static org.ventry.docx.formula.LatexSymbols.DICTIONARY;
  */
 
 class MathMLConverter {
+    private final ContentWrapper wrapper;
     private final StringBuilder mml;
     private final StringBuilder section;
     private int cursor;
 
     MathMLConverter(CharSequence source) {
-        this.mml = new StringBuilder(source);
-        this.section = new StringBuilder(17);
-        this.cursor = 0;
+        wrapper = new ContentWrapper();
+        mml = new StringBuilder(source);
+        section = new StringBuilder(17);
+        cursor = 0;
     }
 
     /**
@@ -29,7 +31,8 @@ class MathMLConverter {
      */
     String convert() {
         List<CharSequence> symbols = convertRecursively(mml.length());
-        return symbols.stream().collect(Collectors.joining(" "));
+        String content = String.join(" ", symbols);
+        return wrapper.wrap(content);
     }
 
     private List<CharSequence> convertRecursively(int endExclude) {
@@ -122,5 +125,13 @@ class MathMLConverter {
             i--;
         }
         return i + 1;
+    }
+
+    private static class ContentWrapper {
+        private static final Pattern TEXT_WRAPPER = Pattern.compile("([\\u4e00-\\u9fff]+)");
+
+        private String wrap(String content) {
+            return TEXT_WRAPPER.matcher(content).replaceAll("\\\\text{$1}");
+        }
     }
 }
