@@ -10,3 +10,6 @@ mfrac|\dfrac%1%2
 msqrt|\sqrt%1
 mroot|\sqrt[%2]%1
 mfenced|\left(%1\right)
+# menclose notation="longdiv"(default)|\overline{)%S}
+# menclose notation="box"|\boxed{%S}
+menclose|\boxed{%S}
